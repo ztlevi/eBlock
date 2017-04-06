@@ -1,0 +1,32 @@
+﻿<!doctype html>
+<html>
+  <head>
+    <link rel="stylesheet" href="css/popup.css" type="text/css" media="screen" />
+
+	<!-- Load the AJAX API -->
+	<script src="https://www.google.com/jsapi"></script>
+
+  </head>
+
+  <body>
+    <div id="nav">
+	  <a id="today" href="#">Today</a>
+	  &nbsp;|&nbsp;
+	  <a id="average" href="#">Average</a>
+	  &nbsp;|&nbsp;
+	  <a id="all" href="#">All Time</a>
+    </div>
+    <div id="settings">
+	  <a id="options" href="#">Options</a>
+	  <label id="time" >hour</label>
+    </div>
+    <div style="clear:both"></div>
+    <div id="data">
+	  <span id="nodata">Start browsing to collect usage data.</span>
+	  <div id="chart_div"></div>
+	  <div id="table_div"></div>
+    </div>
+  </body>
+  <!-- Load popup script -->
+  <script src="popup.js"></script>
+</html>

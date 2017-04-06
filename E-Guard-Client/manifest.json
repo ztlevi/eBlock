@@ -1,0 +1,14 @@
+{
+	"manifest_version": 2,
+	"name": "E-Guard",
+	"version": "0.0.1",
+	"background": { "scripts": ["jquery-2.0.0.min.js", "background.js"] },
+	"browser_action": {
+		"default_icon": "icon.png",
+		"default_title": "E-Guard",
+		"default_popup": "popup.html"
+	},
+	"permissions" : ["idle","tabs","<all_urls>","webRequestBlocking","webRequest"],
+  	"options_page": "options.html",
+    "content_security_policy": "script-src 'self' 'unsafe-eval' https://www.google.com https://platform.twitter.com; object-src 'self'"
+}
