@@ -224,10 +224,11 @@ var View_OptionPage = function(localStorage) {
                 width: 500,
                 height: 300
             },
-            slices: {0: {offset: 0.1},
-                     2: {offset: 0.1},
-                     4: {offset: 0.1}}
-            // is3D: true
+            slices: {1: {offset: 0.1},
+                     3: {offset: 0.1},
+                     5: {offset: 0.1},
+                     7: {offset: 0.1}},
+            is3D: true
         };
 
         // Instantiate and draw our chart, passing in some options.
