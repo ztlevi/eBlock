@@ -187,7 +187,7 @@ var Timer = (function(){
                 }
                 // Limit how many sites the chart shows
                 if (!localStorage["chart_limit"]) {
-                    localStorage["chart_limit"] = 7;
+                    localStorage["chart_limit"] = 9;
                 }
                 // Set "other" category
                 // NOTE: other.today is not currently used

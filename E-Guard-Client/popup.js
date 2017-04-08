@@ -34,21 +34,21 @@
 var View_OptionPage = function(localStorage) {
     var bg = chrome.extension.getBackgroundPage();
 
-// Load the Visualization API and the piechart package.
+    // Load the Visualization API and the piechart package.
     google.load('visualization', '1.0', {'packages': ['corechart', 'table']});
 
     this.getBg = function(){
         return bg;
     }
 
-// Show options in a new tab
+    // Show options in a new tab
     this.showOptions = function() {
         chrome.tabs.create({
             url: 'options.html'
         });
     }
 
-// Converts duration to String
+    // Converts duration to String
     var timeString = function(numSeconds) {
         if (numSeconds === 0) {
             return "0 seconds";
@@ -84,7 +84,7 @@ var View_OptionPage = function(localStorage) {
         return timeStr;
     }
 
-// Show the data for the time period indicated by addon
+    // Show the data for the time period indicated by addon
     var displayData = function(type) {
         // Get the domain data
         var domains = JSON.parse(localStorage["domains"]);
@@ -204,25 +204,30 @@ var View_OptionPage = function(localStorage) {
     }
 
 
-// Callback that creates and populates a data table,
-// instantiates the pie chart, passes in the data and
-// draws it.
+    // Callback that creates and populates a data table,
+    // instantiates the pie chart, passes in the data and
+    // draws it.
     var drawChart = function(chart_data) {
         // Create the data table.
         var data = new google.visualization.DataTable();
-        data.addColumn('string', 'Domain');
+        data.addColumn('string', 'Website');
         data.addColumn('number', 'Time');
         data.addRows(chart_data);
 
         // Set chart options
         var options = {
+            title: "Time Percentage",
             tooltip: {
                 text: 'percentage'
             },
             chartArea: {
-                width: 400,
-                height: 180
-            }
+                width: 500,
+                height: 300
+            },
+            slices: {0: {offset: 0.1},
+                     2: {offset: 0.1},
+                     4: {offset: 0.1}}
+            // is3D: true
         };
 
         // Instantiate and draw our chart, passing in some options.
@@ -243,13 +248,20 @@ var View_OptionPage = function(localStorage) {
         } else {
             console.error("No such type: " + type);
         }
-        data.addColumn('number', "Time Spent (" + timeDesc + ")");
-        data.addRows(table_data);
 
         var options = {
             allowHtml: true,
             sort: 'disable'
         };
+
+        data.addColumn('number', "Time Spent (" + timeDesc + ")");
+        data.addRows(table_data);
+
+        var formatter = new google.visualization.ColorFormat();
+        formatter.addRange(0, 1800, '#1e90ff', 'white');
+        formatter.addRange(1800, null, 'red', 'white');
+        formatter.format(data, 1); // Apply formatter to second column
+
         var table = new google.visualization.Table(document.getElementById('table_div'));
         table.draw(data, options);
     }
@@ -281,6 +293,16 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelector('#average').addEventListener('click', function() { view_optionpage.show(bg.TYPE.average); });
     document.querySelector('#all').addEventListener('click', function() { view_optionpage.show(bg.TYPE.all); });
     document.querySelector('#options').addEventListener('click', view_optionpage.showOptions);
+    document.getElementById('showTable').addEventListener('click',function() {
+        document.getElementById("table_div").hidden = false;
+        document.getElementById("hideTable").hidden = false;
+        document.getElementById("showTable").hidden = true;
+    });
+    document.getElementById('hideTable').addEventListener('click',function() {
+        document.getElementById("table_div").hidden = true;
+        document.getElementById("hideTable").hidden = true;
+        document.getElementById("showTable").hidden = false;
+    });
 });
 
 setInterval(updateTimer(this.localStorage), 1000);
