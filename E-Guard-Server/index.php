@@ -232,7 +232,7 @@
                             $mail->Host       = "smtp.gmail.com";
                             $mail->Port       = 465;
                             $mail->Username   = "ztlevi1993@gmail.com";
-                            $mail->Password   = "//..,,daiyue";
+                            $mail->Password   = "your_password";
                             $mail->SetFrom('ztlevi1993@gmail.com', 'Ting Zhou');
                             $mail->AddReplyTo("ztlevi1993@gmail.com","Ting Zhou");
                             $mail->Subject    = 'E-Guard Notification';

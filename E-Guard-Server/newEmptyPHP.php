@@ -1,5 +1,5 @@
 <?php
-$pdo = new PDO("mysql:host=localhost;dbname=mysql","root","daiyue");
+$pdo = new PDO("mysql:host=localhost;dbname=mysql","root","root");
 $configuration = null;
 $query_blockedCategory = ("SELECT Category FROM block_category");
 $configuration->block_category = $pdo->query($query_blockedCategory)->fetchAll(PDO::FETCH_COLUMN, 0);
