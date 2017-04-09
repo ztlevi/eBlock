@@ -6,7 +6,7 @@
 
 ## Installation Steps:
 
-1. Create a DB in Phpmyadmin called E-Guard. Import the *DB.sql* from the directory *'{server root directory}/E-Guard/E-Guard-Database'*
+1. Create a DB in Phpmyadmin called e-guard. Import the *DB.sql* from the directory *'{server root directory}/E-Guard/E-Guard-Database'*
 
 
 

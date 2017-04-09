@@ -7,7 +7,7 @@ html, body {
 }
 
 body {
-    background: #A1FFF5;
+    background: white;
     display: flex;
     justify-content: center;
     align-items: center;

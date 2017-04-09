@@ -237,6 +237,15 @@ var View_OptionPage = function(localStorage) {
     }
 
     var drawTable = function (table_data, type) {
+        var cssClassNames = {
+            'headerRow': 'italic-darkblue-font large-font bold-font',
+            'tableRow': '',
+            'oddTableRow': 'beige-background',
+            'selectedTableRow': 'orange-background large-font',
+            'hoverTableRow': '',
+            'headerCell': 'gold-border',
+            'tableCell': '',
+            'rowNumberCell': 'underline-blue-font'};
         var data = new google.visualization.DataTable();
         data.addColumn('string', 'Domain');
         var timeDesc;
@@ -251,8 +260,8 @@ var View_OptionPage = function(localStorage) {
         }
 
         var options = {
-            allowHtml: true,
-            sort: 'disable'
+            'allowHtml': true,
+            'cssClassNames': cssClassNames
         };
 
         data.addColumn('number', "Time Spent (" + timeDesc + ")");

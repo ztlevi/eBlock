@@ -6,7 +6,7 @@ function Login(){
     var password = document.getElementById("password").value;
     $.ajax({
         async: false,
-        url: "http://localhost/E-Guard/E-Guard-Server/index.php",
+        url: "http://localhost/E-Guard/E-Guard-Server/index.php",
         cache: false,
         type: "POST",
         data: JSON.stringify({action: "login", username: username, password : password}),
