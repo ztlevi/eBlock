@@ -31,11 +31,11 @@ if($parameters){
 }
 
 class Control_Facade {
-    public $db = null;
-    public $whitelistReview = null;
-    public $blacklistReview = null;
-    public $localReview = null;
-    public $bluecoatReview = null;
+    private $db = null;
+    private $whitelistReview = null;
+    private $blacklistReview = null;
+    private $localReview = null;
+    private $bluecoatReview = null;
     public function __construct(PDO $db, WhiteListReview $whitelistReview,
                                 BlackListReivew $blacklistReview, LocalReview $localReview, BlueCoatReview $bluecoatReview){
         $this->db = $db;
@@ -223,6 +223,7 @@ class BlueCoatReview extends Handler{
         $jsonResult = json_decode($result, true);
         if(preg_match_all('/>.+?<\/a>/', $jsonResult['categorization'] , $categorization)){
             for($categorizationIndex=0; $categorizationIndex < sizeof($categorization[0]); $categorizationIndex++){
+                // trim the categorization string
                 $categorization[0][$categorizationIndex] = str_replace(array("</a>",">"),"",$categorization[0][$categorizationIndex]);
                 $query = "INSERT INTO website_category (`URL`, `Category`) VALUES ('{$request}','{$categorization[0][$categorizationIndex]}');";
                 $result = $db->exec($query);
@@ -238,21 +239,18 @@ class BlueCoatReview extends Handler{
                 $mail->SMTPSecure = "ssl";
                 $mail->Host       = "smtp.gmail.com";
                 $mail->Port       = 465;
-                $mail->Username   = "ztlevi1993@gmail.com";
-                $mail->Password   = "your_password";
-                $mail->SetFrom('ztlevi1993@gmail.com', 'Ting Zhou');
-                $mail->AddReplyTo("ztlevi1993@gmail.com","Ting Zhou");
+                $mail->Username   = "ztlevitest@gmail.com";
+                $mail->Password   = "helloTest";
+                $mail->SetFrom('ztlevitest@gmail.com', 'fdsafds');
+                $mail->AddReplyTo("ztlevitest@gmail.com","fdsafds");
                 $mail->Subject    = 'E-Guard Notification';
                 $mail->AltBody    = "To check the mail，please use HTML client";
-                $mail->MsgHTML("$request is uncategorized, please go to option page and assign it to one category! \r\nThanks");
-                $mail->AddAddress("{$emailAdress['Username']}", "Ting Zhou");
+                $mail->MsgHTML("Hello!\r\n $request is uncategorized, please go to E-Guard option page and assign it to one category! \r\nThanks");
+                $mail->AddAddress("{$emailAdress['Username']}", "fdsafds");
                 $mail->Send();
             }
             $this->successor->handle($request,  $db);
         }
     }
 }
-
-
-
 ?>

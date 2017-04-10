@@ -34,7 +34,7 @@ var View_HomePage = function() {
         console.log(errorThrown);
     }
     this.checkForValidUrl = function (tabId, changeInfo, tab) {
-        if (changeInfo.url == undefined || changeInfo.url.match("chrome://") || changeInfo.url.match("www.google.com"))return;
+        if (changeInfo.url == undefined || changeInfo.url.match("chrome://"))return;
         else {
             var url = tab.url;
             console.log("tab.url" + tab.url);
@@ -42,7 +42,7 @@ var View_HomePage = function() {
                 var domain = getDomainFromUrl(tab.url);
                 $.ajax({
                     async: false,
-                    url: "http://localhost/E-Guard/E-Guard-Server/index.php",
+                    url: "http://localhost/E-Guard/E-Guard-Server/index.php",
                     cache: false,
                     type: "POST",
                     data: JSON.stringify({action: "request", url: domain}),
@@ -236,7 +236,7 @@ var Timer = (function(){
                                 total.today += UPDATE_INTERVAL;
                                 if (total.today > parseInt(window.localStorage["timeLimitation"])){
                                     chrome.windows.getCurrent(function(window){
-                                        alert("Time is over! Please contact the administrator to modify limited time.");
+                                        alert("Exceed the time limitation! \nPlease contact the administrator to modify limited time.");
                                         chrome.windows.remove(window.id);
                                     });
                                 }
@@ -292,8 +292,3 @@ timer.setDefaults();
 setInterval(timer.updateData, UPDATE_INTERVAL * 1000);
 viewHomePage = new View_HomePage();
 chrome.tabs.onUpdated.addListener(viewHomePage.checkForValidUrl);
-
-
-
-
-

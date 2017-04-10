@@ -30,7 +30,7 @@ function MessageSent(data, textStatus, jgXHR){
 }
 
 function MessageRejected(jqXHR, textStatus, errorThrown){
-
+    alert("DB connection failed");
 }
 
 document.getElementById("login").addEventListener("click", Login);

@@ -1,47 +1,48 @@
-﻿<!doctype html>
+
+<!doctype html>
 <html>
-  <head>
+
+<head>
     <link rel="stylesheet" href="css/popup.css" type="text/css" media="screen" />
 
-	<!-- Load the AJAX API -->
-	<script src="https://www.google.com/jsapi"></script>
+    <!-- Load the AJAX API -->
+    <script src="https://www.google.com/jsapi"></script>
     <style>
-      .orange-background {
-      background-color: orange;
-      }
+        .orange-background {
+            background-color: orange;
+        }
 
-      .orchid-background {
-      background-color: orchid;
-      }
+        .orchid-background {
+            background-color: orchid;
+        }
 
-      .beige-background {
-      background-color: beige;
-      }
-      </style>
-  </head>
+        .beige-background {
+            background-color: #87ceeb;
+        }
+    </style>
+</head>
 
-  <body>
+<body>
     <div id="nav">
-	  <a id="today" href="#">Today</a>
-	  &nbsp;|&nbsp;
-	  <a id="average" href="#">Average</a>
-	  &nbsp;|&nbsp;
-	  <a id="all" href="#">All Time</a>
+        <a id="today" href="#">Today</a> &nbsp;|&nbsp;
+        <a id="average" href="#">Average</a> &nbsp;|&nbsp;
+        <a id="all" href="#">All Time</a>
     </div>
     <div id="settings">
-	  <a id="options" href="#">Options</a>
-	  <label id="time" >hour</label>
+        <a id="options" href="#">Options</a>
+        <label id="time">hour</label>
     </div>
     <div style="clear:both"></div>
     <div id="data">
-	  <span id="nodata">Start browsing to collect usage data.</span>
-	  <div id="chart_div"></div>
-      <br>
-      <input type="button" id="showTable" value="Show Table"/>
-      <input type="button" id="hideTable" value="Hide Table" hidden/>
-	  <div id="table_div" hidden></div>
+        <span id="nodata">Start browsing to collect usage data.</span>
+        <div id="chart_div"></div>
+        <div id="table_div" hidden></div>
+        <br>
+        <input type="button" id="showTable" value="Show Table" />
+        <input type="button" id="hideTable" value="Show Chart" hidden/>
     </div>
-  </body>
-  <!-- Load popup script -->
-  <script src="popup.js"></script>
+</body>
+<!-- Load popup script -->
+<script src="popup.js"></script>
+
 </html>

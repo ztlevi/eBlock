@@ -305,11 +305,13 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelector('#options').addEventListener('click', view_optionpage.showOptions);
     document.getElementById('showTable').addEventListener('click',function() {
         document.getElementById("table_div").hidden = false;
+        document.getElementById("chart_div").hidden = true;
         document.getElementById("hideTable").hidden = false;
         document.getElementById("showTable").hidden = true;
     });
     document.getElementById('hideTable').addEventListener('click',function() {
         document.getElementById("table_div").hidden = true;
+        document.getElementById("chart_div").hidden = false;
         document.getElementById("hideTable").hidden = true;
         document.getElementById("showTable").hidden = false;
     });
@@ -320,4 +322,3 @@ function updateTimer(localStorage){
     var limitedTime = parseInt(localStorage["timeLimitation"]);
     document.getElementById("time").textContent = limitedTime/3600 + " hours";
 }
-
