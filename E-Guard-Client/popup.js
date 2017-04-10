@@ -37,6 +37,8 @@ var View_OptionPage = function(localStorage) {
     // Load the Visualization API and the piechart package.
     google.load('visualization', '1.0', {'packages': ['corechart', 'table']});
 
+        // google.charts.load("current", {packages:["corechart"]});
+        // google.charts.setOnLoadCallback(drawBar);
     this.getBg = function(){
         return bg;
     }
@@ -159,6 +161,8 @@ var View_OptionPage = function(localStorage) {
 
         // Draw the chart
         drawChart(limited_data);
+        // Draw the Bar
+        drawBar(limited_data, type);
 
         // Add total time
         var total = JSON.parse(localStorage["total"]);
@@ -220,6 +224,8 @@ var View_OptionPage = function(localStorage) {
             tooltip: {
                 text: 'percentage'
             },
+            height: 350,
+            width: 600,
             chartArea: {
                 width: 500,
                 height: 300
@@ -234,6 +240,34 @@ var View_OptionPage = function(localStorage) {
         // Instantiate and draw our chart, passing in some options.
         var chart = new google.visualization.PieChart(document.getElementById('chart_div'));
         chart.draw(data, options);
+    }
+
+    var drawBar = function (table_data, type) {
+        var data = new google.visualization.DataTable();
+        data.addColumn('string', 'Domain');
+        var timeDesc;
+        if (type === bg.TYPE.today) {
+            timeDesc = "Today";
+        } else if (type === bg.TYPE.average) {
+            timeDesc = "Daily Average";
+        } else if (type === bg.TYPE.all) {
+            timeDesc = "Over " + localStorage["num_days"] + " Days";
+        } else {
+            console.error("No such type: " + type);
+        }
+
+        var options = {
+            title: "Time Spent Bar Chart",
+            'allowHtml': true,
+            height: 400,
+            width: 600
+        };
+
+        data.addColumn('number', "Time Spent (" + timeDesc + ")");
+        data.addRows(table_data);
+
+        var bar = new google.visualization.BarChart(document.getElementById('bar_div'));
+        bar.draw(data, options);
     }
 
     var drawTable = function (table_data, type) {
@@ -252,8 +286,7 @@ var View_OptionPage = function(localStorage) {
         if (type === bg.TYPE.today) {
             timeDesc = "Today";
         } else if (type === bg.TYPE.average) {
-            timeDesc = "Daily Average";
-        } else if (type === bg.TYPE.all) {
+            timeDesc = "Daily Average";        } else if (type === bg.TYPE.all) {
             timeDesc = "Over " + localStorage["num_days"] + " Days";
         } else {
             console.error("No such type: " + type);
@@ -303,17 +336,29 @@ document.addEventListener('DOMContentLoaded', function () {
     document.querySelector('#average').addEventListener('click', function() { view_optionpage.show(bg.TYPE.average); });
     document.querySelector('#all').addEventListener('click', function() { view_optionpage.show(bg.TYPE.all); });
     document.querySelector('#options').addEventListener('click', view_optionpage.showOptions);
+    document.getElementById('showBar').addEventListener('click',function() {
+        document.getElementById("bar_div").hidden = false;
+        document.getElementById("table_div").hidden = true;
+        document.getElementById("chart_div").hidden = true;
+        document.getElementById("showBar").hidden = true;
+        document.getElementById("showTable").hidden = false;
+        document.getElementById("showChart").hidden = false;
+    });
     document.getElementById('showTable').addEventListener('click',function() {
         document.getElementById("table_div").hidden = false;
+        document.getElementById("bar_div").hidden = true;
         document.getElementById("chart_div").hidden = true;
-        document.getElementById("hideTable").hidden = false;
+        document.getElementById("showBar").hidden = false;
+        document.getElementById("showChart").hidden = false;
         document.getElementById("showTable").hidden = true;
     });
-    document.getElementById('hideTable').addEventListener('click',function() {
-        document.getElementById("table_div").hidden = true;
+    document.getElementById('showChart').addEventListener('click',function() {
         document.getElementById("chart_div").hidden = false;
-        document.getElementById("hideTable").hidden = true;
+        document.getElementById("table_div").hidden = true;
+        document.getElementById("bar_div").hidden = true;
+        document.getElementById("showChart").hidden = true;
         document.getElementById("showTable").hidden = false;
+        document.getElementById("showBar").hidden = false;
     });
 });
 

@@ -1,8 +1,8 @@
 <?php
 header("content-type:application/json; charset:utf-8");
 ini_set('display_errors', false);
-require_once('./PHPMailer-master/class.phpmailer.php');
-require_once("./PHPMailer-master/class.smtp.php");
+// require_once('./PHPMailer-master/class.phpmailer.php');
+// require_once("./PHPMailer-master/class.smtp.php");
 
 $rawData = file_get_contents("php://input");
 $parameters = json_decode($rawData);
@@ -36,6 +36,8 @@ class Control_Facade {
     private $blacklistReview = null;
     private $localReview = null;
     private $bluecoatReview = null;
+
+    // initialization for Control_Facade
     public function __construct(PDO $db, WhiteListReview $whitelistReview,
                                 BlackListReivew $blacklistReview, LocalReview $localReview, BlueCoatReview $bluecoatReview){
         $this->db = $db;
@@ -54,6 +56,7 @@ class Control_Facade {
         return $this->whitelistReview->handle($url, $this->db);
     }
 
+    // Valid the user login
     public function CheckSession($username, $password){
         $query = ("SELECT * FROM eguard_user WHERE Username = '{$username}' "
                   . "AND Password = '{$password}'");
@@ -229,16 +232,46 @@ class BlueCoatReview extends Handler{
                 $result = $db->exec($query);
             }
             if (strcmp($categorization[0][0],"Uncategorized")==0){
+                require './PHPMailer/PHPMailerAutoload.php';
                 $query = ("SELECT Username FROM eguard_user");
                 $result = $db->query($query);
                 $emailAdress = $result->fetch();
                 $mail  = new PHPMailer();
+
+                // $mail->SMTPDebug = true;
+                // $mail->SMTPAuth = true;
+                // $mail->CharSet = 'utf-8';
+                // $mail->isSMTP();                                      // Set mailer to use SMTP
+                // $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
+                // $mail->SMTPAuth = true;                               // Enable SMTP authentication
+                // $mail->Username = 'ztlevitest@gmail.com';                 // SMTP username
+                // $mail->Password = 'helloTest';                           // SMTP password
+                // $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
+                // $mail->Port = 587;                                    // TCP port to connect to
+                //
+                // $mail->setFrom('ztlevitest@gmail.com', 'E-Guard');
+                // $mail->AddAddress("{$emailAdress['Username']}", "Ting Zhou");
+                // $mail->addAddress('ztlevi1993@gmail.com', 'Ting Zhou');     // Add a recipient
+                // $mail->addReplyTo('ztlevitest@gmail.com', 'Information');
+                //
+                // $mail->isHTML(true);                                  // Set email format to HTML
+                //
+                // $mail->Subject = 'E-Guard Notification';
+                // $mail->Body    = 'Hello!\r\n $request is uncategorized, please go to E-Guard option page and assign it to one category! \r\nThanks';
+                // $mail->AltBody = 'Hello!\r\n $request is uncategorized, please go to E-Guard option page and assign it to one category! \r\nThanks';
+                //
+                // if(!$mail->send()) {
+                //     echo 'Message could not be sent.';
+                //     echo 'Mailer Error: ' . $mail->ErrorInfo;
+                // } else {
+                //     echo 'Message has been sent';
+                // }
                 $mail->CharSet    ="UTF-8";
                 $mail->IsSMTP();
                 $mail->SMTPAuth   = true;
-                $mail->SMTPSecure = "ssl";
+                $mail->SMTPSecure = "tls";
                 $mail->Host       = "smtp.gmail.com";
-                $mail->Port       = 465;
+                $mail->Port       = 587;
                 $mail->Username   = "ztlevitest@gmail.com";
                 $mail->Password   = "helloTest";
                 $mail->SetFrom('ztlevitest@gmail.com', 'fdsafds');
@@ -246,8 +279,14 @@ class BlueCoatReview extends Handler{
                 $mail->Subject    = 'E-Guard Notification';
                 $mail->AltBody    = "To check the mail，please use HTML client";
                 $mail->MsgHTML("Hello!\r\n $request is uncategorized, please go to E-Guard option page and assign it to one category! \r\nThanks");
-                $mail->AddAddress("{$emailAdress['Username']}", "fdsafds");
+                $mail->AddAddress("{$emailAdress['Username']}", "Ting Zhou");
                 $mail->Send();
+                if(!$mail->send()) {
+                    echo 'Message could not be sent.';
+                    echo 'Mailer Error: ' . $mail->ErrorInfo;
+                } else {
+                    echo 'Message has been sent';
+                }
             }
             $this->successor->handle($request,  $db);
         }
