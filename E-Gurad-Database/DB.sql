@@ -1,14 +1,20 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.6
--- https://www.phpmyadmin.net/
+-- version 4.4.15.5
+-- http://www.phpmyadmin.net
 --
--- Host: localhost:3306
--- Generation Time: Apr 06, 2017 at 03:38 PM
--- Server version: 5.6.35
--- PHP Version: 7.0.15
+-- Host: 127.0.0.1:3306
+-- Generation Time: Apr 10, 2017 at 03:05 PM
+-- Server version: 5.6.34-log
+-- PHP Version: 7.0.13
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
 
 --
 -- Database: `e_guard`
@@ -20,7 +26,7 @@ SET time_zone = "+00:00";
 -- Table structure for table `block_category`
 --
 
-CREATE TABLE `block_category` (
+CREATE TABLE IF NOT EXISTS `block_category` (
   `Category` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -29,6 +35,8 @@ CREATE TABLE `block_category` (
 --
 
 INSERT INTO `block_category` (`Category`) VALUES
+('Abortion'),
+('Search Engines/Portals'),
 ('Spam'),
 ('Sports/Recreation'),
 ('Suspicious'),
@@ -47,17 +55,18 @@ INSERT INTO `block_category` (`Category`) VALUES
 -- Table structure for table `eguard_user`
 --
 
-CREATE TABLE `eguard_user` (
+CREATE TABLE IF NOT EXISTS `eguard_user` (
   `Username` varchar(50) NOT NULL,
-  `Password` varchar(50) NOT NULL
+  `Password` varchar(50) NOT NULL,
+  `Email` varchar(30) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `eguard_user`
 --
 
-INSERT INTO `eguard_user` (`Username`, `Password`) VALUES
-('ztlevi', 'ztlevi');
+INSERT INTO `eguard_user` (`Username`, `Password`, `Email`) VALUES
+('ztlevi', 'ztlevi', 'ztlevi1993@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -65,7 +74,7 @@ INSERT INTO `eguard_user` (`Username`, `Password`) VALUES
 -- Table structure for table `timer`
 --
 
-CREATE TABLE `timer` (
+CREATE TABLE IF NOT EXISTS `timer` (
   `Limitation` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -75,7 +84,7 @@ CREATE TABLE `timer` (
 -- Table structure for table `website_black_list`
 --
 
-CREATE TABLE `website_black_list` (
+CREATE TABLE IF NOT EXISTS `website_black_list` (
   `URL` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -92,7 +101,7 @@ INSERT INTO `website_black_list` (`URL`) VALUES
 -- Table structure for table `website_category`
 --
 
-CREATE TABLE `website_category` (
+CREATE TABLE IF NOT EXISTS `website_category` (
   `URL` varchar(50) NOT NULL,
   `Category` varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -105,7 +114,6 @@ INSERT INTO `website_category` (`URL`, `Category`) VALUES
 ('punchbaby.com', 'Adult/Mature Content'),
 ('www.abortionfacts.com', 'Abortion'),
 ('www.asahibeer.co.jp', 'Alcohol'),
-('www.baidu.com', 'Search Engine'),
 ('www.budweiser.com', 'Alcohol'),
 ('www.carabal.es', 'Alcohol'),
 ('www.carlsberg.com', 'Alcohol'),
@@ -153,8 +161,6 @@ INSERT INTO `website_category` (`URL`, `Category`) VALUES
 ('www.dictionary.com', 'Reference'),
 ('www.fdshuaighauihugia.com', 'Suspicious'),
 ('www.aaaaaaaaa.com', 'Suspicious'),
-('www.abfdsa.com', 'Uncategorized'),
-('www.tesatag.com', 'Uncategorized'),
 ('www.zhanqi.tv', 'Games'),
 ('www.acfun.tv', 'Entertainment'),
 ('bbs.ncar.cc', 'Search Engines/Portals'),
@@ -164,7 +170,6 @@ INSERT INTO `website_category` (`URL`, `Category`) VALUES
 ('v.qq.com', 'Mixed Content/Potentially Adult'),
 ('www.bing.com', 'Search Engines/Portals'),
 ('getbootstrap.com', 'Technology/Internet'),
-('www.gorhce.com', 'Uncategorized'),
 ('76km.wordpress.com', 'Technology/Internet'),
 ('www.360doc.com', 'Reference'),
 ('www.programgo.com', 'Technology/Internet'),
@@ -182,7 +187,6 @@ INSERT INTO `website_category` (`URL`, `Category`) VALUES
 ('developer.mozilla.org', 'Technology/Internet'),
 ('www.yisou.com', 'Search Engines/Portals'),
 ('developer.chrome.com', 'Technology/Internet'),
-('www.fdsagra.com', 'Uncategorized'),
 ('campus.alibaba.com', 'Business/Economy'),
 ('leetcode.com', 'Technology/Internet'),
 ('shibboleth.umich.edu', 'Education'),
@@ -191,12 +195,9 @@ INSERT INTO `website_category` (`URL`, `Category`) VALUES
 ('umdearborn.instructure.com', 'Education'),
 ('www.thefreedictionary.com', 'Reference'),
 ('www.wikipedia.org', 'Reference'),
-('www.fdsagra.com', 'Uncategorized'),
 ('chrome.google.com', 'Technology/Internet'),
 ('www.merriam-webster.com', 'Reference'),
 ('www.umcu.org', 'Business/Economy'),
-('www.abcdefghjil.com', 'Uncategorized'),
-('www.abcdefghjil.com', 'Uncategorized'),
 ('www.youtube.com', 'Audio/Video Clips'),
 ('www.youtube.com', 'Mixed Content/Potentially Adult'),
 ('umich.edu', 'Education'),
@@ -226,7 +227,29 @@ INSERT INTO `website_category` (`URL`, `Category`) VALUES
 ('sitereview.bluecoat.com', 'Technology/Internet'),
 ('www.fhuaiwgheuai.com', 'Suspicious'),
 ('www.aaabsafds.com', 'Controlled Substances'),
-('touch.facebook.com', 'Social Networking');
+('touch.facebook.com', 'Social Networking'),
+('www.mamp.info', 'Technology/Internet'),
+('www.google.com', 'Search Engines/Portals'),
+('member.bilibili.com', 'Entertainment'),
+('member.bilibili.com', 'Audio/Video Clips'),
+('kochdavisjobs.com', 'Job Search/Careers'),
+('www.dice.com', 'Job Search/Careers'),
+('dnserrorassist.att.net', 'Search Engines/Portals'),
+('www.u09upupoij.com', 'Malicious Outbound Data/Botnets'),
+('www.344143dsfsdf.com', 'Suspicious'),
+('www.8085tgdsg.com', 'Suspicious'),
+('www.u0uiiuijkjk.com', 'Malicious Outbound Data/Botnets'),
+('www.jo8uijiojojkl.com', 'Malicious Outbound Data/Botnets'),
+('github.com', 'Office/Business Applications'),
+('github.com', 'Technology/Internet'),
+('www.huhohjkkljkjlkjlk.com', 'Malicious Outbound Data/Botnets'),
+('www.huy8ijji.com', 'Suspicious'),
+('www.224kjijiji.com', 'Suspicious'),
+('www.32434jikjiji.com', 'Suspicious'),
+('www.43243ijiji.com', 'Malicious Outbound Data/Botnets'),
+('www.jij3443.com', 'Suspicious'),
+('support.google.com', 'Technology/Internet'),
+('www.baidu.com', 'Search Engines/Portals');
 
 -- --------------------------------------------------------
 
@@ -234,7 +257,7 @@ INSERT INTO `website_category` (`URL`, `Category`) VALUES
 -- Table structure for table `website_white_list`
 --
 
-CREATE TABLE `website_white_list` (
+CREATE TABLE IF NOT EXISTS `website_white_list` (
   `URL` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
@@ -243,6 +266,9 @@ CREATE TABLE `website_white_list` (
 --
 
 INSERT INTO `website_white_list` (`URL`) VALUES
-('www.google.com'),
 ('www.leetcode.com'),
 ('www.sina.com');
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

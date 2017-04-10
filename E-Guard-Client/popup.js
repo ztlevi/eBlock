@@ -365,5 +365,5 @@ document.addEventListener('DOMContentLoaded', function () {
 setInterval(updateTimer(this.localStorage), 1000);
 function updateTimer(localStorage){
     var limitedTime = parseInt(localStorage["timeLimitation"]);
-    document.getElementById("time").textContent = limitedTime/3600 + " hours";
+    document.getElementById("time").textContent = "Time Limitation: " + limitedTime/3600 + " hours";
 }

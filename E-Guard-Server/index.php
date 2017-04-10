@@ -1,8 +1,8 @@
 <?php
 header("content-type:application/json; charset:utf-8");
 ini_set('display_errors', false);
-// require_once('./PHPMailer-master/class.phpmailer.php');
-// require_once("./PHPMailer-master/class.smtp.php");
+// require_once('./PHPMailer/class.phpmailer.php');
+// require_once("./PHPMailer/class.smtp.php");
 
 $rawData = file_get_contents("php://input");
 $parameters = json_decode($rawData);
@@ -222,6 +222,7 @@ class BlueCoatReview extends Handler{
             )
         );
         $context = stream_context_create($options);
+        // query the bluecoat to check the website category
         $result = file_get_contents('http://sitereview.bluecoat.com/rest/categorization', false, $context);
         $jsonResult = json_decode($result, true);
         if(preg_match_all('/>.+?<\/a>/', $jsonResult['categorization'] , $categorization)){
@@ -232,60 +233,55 @@ class BlueCoatReview extends Handler{
                 $result = $db->exec($query);
             }
             if (strcmp($categorization[0][0],"Uncategorized")==0){
-                require './PHPMailer/PHPMailerAutoload.php';
-                $query = ("SELECT Username FROM eguard_user");
+                if (require './PHPMailer/PHPMailerAutoload.php')
+                    echo "Seccess load PHPMailer";
+                //Create a new PHPMailer instance
+                $mail = new PHPMailer;
+                //Tell PHPMailer to use SMTP
+                $mail->isSMTP();
+                //Enable SMTP debugging
+                // 0 = off (for production use)
+                // 1 = client messages
+                // 2 = client and server messages
+                $mail->SMTPDebug = 2;
+                //Ask for HTML-friendly debug output
+                $mail->Debugoutput = 'html';
+                //Set the hostname of the mail server
+                $mail->Host = 'smtp.gmail.com';
+                //Set the encryption system to use - ssl (deprecated) or tls
+                $mail->Port = 587;
+                $mail->SMTPSecure = 'tls';
+                //Whether to use SMTP authentication
+                $mail->SMTPAuth = true;
+                //Username to use for SMTP authentication - use full email address for gmail
+                $mail->Username = "ztlevitest@gmail.com";
+                //Password to use for SMTP authentication
+                $mail->Password = "helloTest";
+                //Set who the message is to be sent from
+                $mail->setFrom('ztlevitest@gmail.com', 'Ting Zhou');
+                //Set an alternative reply-to address
+                $mail->addReplyTo('ztlevitest@gmail.com', 'Ting Zhou');
+                //Set who the message is to be sent to
+                $mail->addAddress('ztlevtest@yahoo.com', 'Ting Zhou');
+                $query = ("SELECT Username, Email FROM eguard_user");
                 $result = $db->query($query);
-                $emailAdress = $result->fetch();
-                $mail  = new PHPMailer();
-
-                // $mail->SMTPDebug = true;
-                // $mail->SMTPAuth = true;
-                // $mail->CharSet = 'utf-8';
-                // $mail->isSMTP();                                      // Set mailer to use SMTP
-                // $mail->Host = 'smtp.gmail.com';  // Specify main and backup SMTP servers
-                // $mail->SMTPAuth = true;                               // Enable SMTP authentication
-                // $mail->Username = 'ztlevitest@gmail.com';                 // SMTP username
-                // $mail->Password = 'helloTest';                           // SMTP password
-                // $mail->SMTPSecure = 'tls';                            // Enable TLS encryption, `ssl` also accepted
-                // $mail->Port = 587;                                    // TCP port to connect to
-                //
-                // $mail->setFrom('ztlevitest@gmail.com', 'E-Guard');
-                // $mail->AddAddress("{$emailAdress['Username']}", "Ting Zhou");
-                // $mail->addAddress('ztlevi1993@gmail.com', 'Ting Zhou');     // Add a recipient
-                // $mail->addReplyTo('ztlevitest@gmail.com', 'Information');
-                //
-                // $mail->isHTML(true);                                  // Set email format to HTML
-                //
-                // $mail->Subject = 'E-Guard Notification';
-                // $mail->Body    = 'Hello!\r\n $request is uncategorized, please go to E-Guard option page and assign it to one category! \r\nThanks';
-                // $mail->AltBody = 'Hello!\r\n $request is uncategorized, please go to E-Guard option page and assign it to one category! \r\nThanks';
-                //
-                // if(!$mail->send()) {
-                //     echo 'Message could not be sent.';
-                //     echo 'Mailer Error: ' . $mail->ErrorInfo;
-                // } else {
-                //     echo 'Message has been sent';
-                // }
-                $mail->CharSet    ="UTF-8";
-                $mail->IsSMTP();
-                $mail->SMTPAuth   = true;
-                $mail->SMTPSecure = "tls";
-                $mail->Host       = "smtp.gmail.com";
-                $mail->Port       = 587;
-                $mail->Username   = "ztlevitest@gmail.com";
-                $mail->Password   = "helloTest";
-                $mail->SetFrom('ztlevitest@gmail.com', 'fdsafds');
-                $mail->AddReplyTo("ztlevitest@gmail.com","fdsafds");
-                $mail->Subject    = 'E-Guard Notification';
-                $mail->AltBody    = "To check the mail，please use HTML client";
-                $mail->MsgHTML("Hello!\r\n $request is uncategorized, please go to E-Guard option page and assign it to one category! \r\nThanks");
-                $mail->AddAddress("{$emailAdress['Username']}", "Ting Zhou");
-                $mail->Send();
-                if(!$mail->send()) {
-                    echo 'Message could not be sent.';
-                    echo 'Mailer Error: ' . $mail->ErrorInfo;
+                $user = $result->fetch();
+                $mail->AddAddress("{$user['Email']}", "{$user['Username']}");
+                //Set the subject line
+                $mail->Subject = 'PHPMailer GMail SMTP test';
+                //Read an HTML message body from an external file, convert referenced images to embedded,
+                //convert HTML into a basic plain-text alternative body
+                $mail->Body = 'Hello!<br>' . $request . 'is uncategorized, please go to E-Guard option page and assign it to one category!<br>Thanks';
+                // $mail->msgHTML(file_get_contents('contents.html'), dirname(__FILE__));
+                //Replace the plain text body with one created manually
+                $mail->AltBody = 'This is a plain-text message body';
+                //Attach an image file
+                // $mail->addAttachment('images/phpmailer_mini.png');
+                //send the message, check for errors
+                if (!$mail->Send()) {
+                    echo "Mailer Error: " . $mail->ErrorInfo;
                 } else {
-                    echo 'Message has been sent';
+                    echo "Message sent!";
                 }
             }
             $this->successor->handle($request,  $db);
