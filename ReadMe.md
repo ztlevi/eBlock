@@ -8,7 +8,7 @@ Authur: Ting Zhou
 
 ## Installation Steps:
 
-1. Create a DB in Phpmyadmin called e-guard. Import the *DB.sql* from the directory *'{server root directory}/E-Guard/E-Guard-Database'*
+1. Create a DB in Phpmyadmin called e_guard. Import the *DB.sql* from the directory *'{server root directory}/E-Guard/E-Guard-Database'*
 2. Load the extension directory "./E-Guard/E-Guard-Client" from the Chrome Extension Page.
 3. You can click the E-Guard Extension -> Options to get to the configuration page.
 4. You can uninstalll it by click the uninstall icon from the Chrome Extension page.
